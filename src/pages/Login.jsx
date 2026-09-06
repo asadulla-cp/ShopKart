@@ -25,12 +25,9 @@ export default function Login() {
 
     try {
       setLoading(true);
-      // withCredentials is already set in api.js — the HttpOnly cookie is
-      // stored automatically by the browser from the Set-Cookie header
       await api.post("/customers/login", form);
       navigate("/home");
     } catch (err) {
-      // Backend returns 401 for wrong credentials — show generic message
       setError(err.response?.data?.message || "Invalid credentials.");
     } finally {
       setLoading(false);
@@ -40,7 +37,6 @@ export default function Login() {
   return (
     <div className="auth-wrapper">
       <div className="auth-card">
-        {/* Brand */}
         <div className="brand">
           <span className="brand-icon">🛒</span>
           <h1 className="brand-name">ShopKart</h1>
@@ -49,7 +45,6 @@ export default function Login() {
         <h2 className="auth-title">Welcome Back</h2>
         <p className="auth-subtitle">Sign in to your ShopKart account</p>
 
-        {/* Error Banner */}
         {error && <div className="alert alert-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">

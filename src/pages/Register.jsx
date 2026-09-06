@@ -5,7 +5,6 @@ import api from "../services/api";
 export default function Register() {
   const navigate = useNavigate();
 
-  // Controlled form state
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -16,17 +15,15 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Generic change handler for all inputs
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setError(""); // clear error on new input
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Basic client-side validation
     if (!form.fullName || !form.email || !form.password || !form.phone) {
       setError("All fields are required.");
       return;
@@ -39,7 +36,6 @@ export default function Register() {
     try {
       setLoading(true);
       await api.post("/customers/register", form);
-      // On success redirect to login
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed. Try again.");
@@ -51,7 +47,6 @@ export default function Register() {
   return (
     <div className="auth-wrapper">
       <div className="auth-card">
-        {/* Logo / Brand */}
         <div className="brand">
           <span className="brand-icon">🛒</span>
           <h1 className="brand-name">ShopKart</h1>
@@ -60,7 +55,6 @@ export default function Register() {
         <h2 className="auth-title">Create Account</h2>
         <p className="auth-subtitle">Join ShopKart and start shopping today</p>
 
-        {/* Error Banner */}
         {error && <div className="alert alert-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">

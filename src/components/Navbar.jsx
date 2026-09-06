@@ -6,10 +6,8 @@ export default function Navbar({ customer }) {
 
   const handleLogout = async () => {
     try {
-      // Call logout endpoint — backend clears the HttpOnly cookie
       await api.post("/customers/logout");
     } catch {
-      // Even if the request fails, clear local state and redirect
     } finally {
       navigate("/login");
     }

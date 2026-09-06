@@ -7,14 +7,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Default: redirect root to /login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
-
-        {/* Public routes */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-
-        {/* Protected route — Home redirects to /login if not authenticated */}
         <Route path="/home" element={<Home />} />
       </Routes>
     </BrowserRouter>
