@@ -1,22 +1,31 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 require("dotenv").config();
 
 const customerRoutes = require("./routes/customer.routes");
 
 const app = express();
 
+// ─── Middleware ────────────────────────────────────────────────────────────────
+app.use(cors({
+  origin: "http://localhost:5173", // React frontend
+  credentials: true,               // allow cookies to be sent cross-origin
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// ─── Routes ───────────────────────────────────────────────────────────────────
 app.use("/customers", customerRoutes);
 
+// ─── Health check ─────────────────────────────────────────────────────────────
 app.get("/", (req, res) => {
   res.json({ message: "ShopKart API is running" });
 });
 
+// ─── Database connection & server start ───────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 
 mongoose
