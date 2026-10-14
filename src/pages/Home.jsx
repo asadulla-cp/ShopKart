@@ -9,11 +9,15 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Fetch the logged-in customer using the HttpOnly cookie.
+    // If the cookie is missing or expired, the backend returns 401 and we
+    // redirect to /login — this is what makes the route "protected".
     const fetchProfile = async () => {
       try {
         const { data } = await api.get("/customers/me");
         setCustomer(data);
       } catch {
+        // Not authenticated — redirect to login
         navigate("/login");
       } finally {
         setLoading(false);
@@ -37,17 +41,27 @@ export default function Home() {
       <Navbar customer={customer} />
 
       <main className="home-main">
+        {/* Welcome Banner */}
         <div className="welcome-banner">
           <div className="welcome-text">
             <h2>Welcome back, {customer?.fullName}! 👋</h2>
             <p>Glad to see you at ShopKart</p>
+            {/* Shop Now button */}
+            <button
+              className="btn-shop-now"
+              onClick={() => navigate("/products")}
+            >
+              🛍️ Shop Now
+            </button>
           </div>
           <span className="welcome-emoji">🛍️</span>
         </div>
 
+        {/* Profile Card */}
         <div className="profile-section">
           <h3 className="section-title">Your Profile</h3>
           <div className="profile-card">
+            {/* Avatar */}
             <div className="avatar">
               {customer?.fullName?.charAt(0).toUpperCase()}
             </div>
