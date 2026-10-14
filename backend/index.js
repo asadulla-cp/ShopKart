@@ -20,12 +20,18 @@ const allowedOrigins = new Set(
 
 app.use(cors({
   origin(origin, callback) {
-    // Vite may use a different local port when its default is already occupied.
+    // Allow requests with no origin (mobile apps, Postman, curl)
+    if (!origin) return callback(null, true);
+
+    // Local Vite dev server (any port)
     const isLocalViteOrigin =
       process.env.NODE_ENV !== "production" &&
-      /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin || "");
+      /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
 
-    if (!origin || allowedOrigins.has(origin) || isLocalViteOrigin) {
+    // Any Vercel deployment (production + preview URLs)
+    const isVercelOrigin = /^https:\/\/.*\.vercel\.app$/.test(origin);
+
+    if (allowedOrigins.has(origin) || isLocalViteOrigin || isVercelOrigin) {
       return callback(null, true);
     }
 
